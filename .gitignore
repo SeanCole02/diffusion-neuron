@@ -1,0 +1,7 @@
+data/
+checkpoints/
+inference_out/
+__pycache__/
+*.pyc
+*.pyo
+*.gif
