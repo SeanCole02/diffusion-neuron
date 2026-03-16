@@ -27,14 +27,13 @@ from data.ucf101_subset import UCF101FramePairDataset, get_test_dataloader, get_
 from models.decoder import SpikeDecoder
 from models.encoder import StimEncoder
 
-_SPIKE_NORM_MAX = 10.0
 _ABLATION_CHECKPOINT = "checkpoints/ablation_noise.pt"
 
 
 def _normalize_spikes(spike_counts: list[float]) -> torch.Tensor:
     active = [spike_counts[ch] for ch in config.ACTIVE_CHANNELS]
     t = torch.tensor(active, dtype=torch.float32)
-    return torch.clamp(t, 0.0, _SPIKE_NORM_MAX) / _SPIKE_NORM_MAX
+    return torch.clamp(t, 0.0, config.SPIKE_NORM_MAX) / config.SPIKE_NORM_MAX
 
 
 def _load_models(checkpoint: str, device: torch.device, ablation: bool):
@@ -81,7 +80,7 @@ async def _collect_spikes(
     device: torch.device,
     label: str = "",
 ) -> torch.Tensor | None:
-    """Run 3-round encoding via CL1. Returns (1, SPIKE_DIM) tensor or None on timeout."""
+    """Run SFE (Same Frame Encoding) via CL1. Returns (1, SPIKE_DIM) tensor or None on timeout."""
     _rounds = [
         ("full",    config.ENCODER_CHANNELS),
         ("spatial", config.SPATIAL_ENCODER_CHANNELS),

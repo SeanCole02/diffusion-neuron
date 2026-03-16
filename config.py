@@ -37,7 +37,7 @@ FRAME_SIZE = (64, 64)
 NUM_CLASSES = len(UCF101_CLASSES)
 
 # ── Model ─────────────────────────────────────────────────────────────────────
-STIM_ROUNDS = 3                              # stimulation rounds per frame (full, spatial, color)
+STIM_ROUNDS = 3                              # SFE (Same Frame Encoding): full, spatial, color rounds
 SPIKE_DIM = len(ACTIVE_CHANNELS) * STIM_ROUNDS  # 177
 CLASS_EMB_DIM = 32
 ENCODER_HIDDEN = 512
@@ -51,6 +51,7 @@ REST_SECONDS = int(1.0 * 3600)       # 1 hour rest
 
 # Wait this long after stimulation before accepting spikes (artifact rejection)
 SPIKE_ARTIFACT_WAIT_S = 0.010  # 10 ms
+SPIKE_NORM_MAX = 35.0          # clamp ceiling before normalising spike counts to [0, 1]
 INTER_CLIP_PAUSE_S    = 1.0    # pause between video clips to let cells settle
 
 # ── UDP ───────────────────────────────────────────────────────────────────────

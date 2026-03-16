@@ -58,14 +58,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-_SPIKE_NORM_MAX = 10.0  # clamp outlier spikes before normalising to [0, 1]
-
-
 def _normalize_spikes(spike_counts: list[float]) -> torch.Tensor:
     """Extract active-channel spikes and normalise to [0, 1]."""
     active = [spike_counts[ch] for ch in config.ACTIVE_CHANNELS]
     t = torch.tensor(active, dtype=torch.float32)
-    return torch.clamp(t, 0.0, _SPIKE_NORM_MAX) / _SPIKE_NORM_MAX  # (SPIKE_DIM,)
+    return torch.clamp(t, 0.0, config.SPIKE_NORM_MAX) / config.SPIKE_NORM_MAX
 
 
 def _load_checkpoint(
